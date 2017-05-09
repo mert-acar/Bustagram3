@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Bustagram</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_online">Where is my bus?</string>
+    <string name="nav_stars">STARS Schedule</string>
+    <string name="nav_help">Help</string>
+    <string name="nav_settings">Settings</string>
+
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>Where is my bus?</item>
+        <item>STARS Schedule</item>
+        <item>Help</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string-array name="bus_spinner">
+        <item>Main Campus</item>
+        <item>East Campus</item>
+        <item>Main - East Campus Ring</item>
+        <item>Main Campus Ring</item>
+        <item>Regional Services</item>
+    </string-array>
+
+
+    <string name="activity_title_about_us">About Us</string>
+</resources>
