@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/colorPrimaryDark">
+
+    <ImageView
+        android:id="@+id/notif_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_stat_directions_bus"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp" />
+    <TextView
+        android:id="@+id/notif_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You are on TMD from city. Have a nice ride!"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_above="@+id/notif_icon"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/yesButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/noButton"
+        android:layout_toRightOf="@+id/noButton"
+        android:background="@color/colorPrimaryDarker"
+        android:elevation="6dp"
+        android:text="OK"
+        android:textColor="#FFFFFF" />
+
+    <Button
+        android:id="@+id/noButton"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/notif_icon"
+        android:layout_toRightOf="@+id/notif_icon"
+        android:background="@color/colorPrimaryDarker"
+        android:elevation="6dp"
+        android:text="FUCK  YOU"
+        android:textColor="#FFFFFF" />
+
+
+</RelativeLayout>

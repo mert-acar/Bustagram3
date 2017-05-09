@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="cs102.mevzu06.bustagram2">
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.BIND_NFC_SERVICE"/>
+    <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true">
+    </uses-feature>
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -26,11 +28,10 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        
         <activity android:name=".Activities.AboutUs"
             android:label="About Us"
             android:theme="@style/AppTheme.NoActionBar">
@@ -56,7 +57,17 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <receiver android:name="cs102.mevzu06.bustagram2.Other.Yes_button_listener">
+            <intent-filter>
+                <action android:name="yes_clicked"/>
+            </intent-filter>
+        </receiver>
 
+        <receiver android:name="cs102.mevzu06.bustagram2.Other.No_button_listener">
+            <intent-filter>
+                <action android:name="no_clicked"/>
+            </intent-filter>
+        </receiver>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDulvrLKKmt64TBjUOTsid5IIKVXL1DNZ8">
