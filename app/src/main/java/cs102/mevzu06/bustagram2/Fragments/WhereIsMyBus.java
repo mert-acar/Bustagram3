@@ -1,9 +1,19 @@
 package cs102.mevzu06.bustagram2.Fragments;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ScrollingView;
 import android.view.LayoutInflater;
@@ -16,6 +26,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import cs102.mevzu06.bustagram2.Activities.MainActivity;
 import cs102.mevzu06.bustagram2.R;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +40,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Arrays;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 
 /**
  * Created by Mert Acar on 7.05.2017.
@@ -41,6 +54,8 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
     View mView;
     ListView listView;
     public WhereIsMyBus() {}
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     @Nullable
     @Override
@@ -78,8 +93,45 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
                 listView.setVisibility(View.VISIBLE);
             }
         });
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                /**
+                 * BURAYA DATABASE e YAZMA METODU GİDECEK
+                 */
+                ((MainActivity)getActivity()).createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
 
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void trackUsers() {
+        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET}, 27);
+            return;
+        }
+
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
     @Override

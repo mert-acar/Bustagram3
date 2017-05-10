@@ -22,6 +22,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int notification_id;
     private RemoteViews remoteViews;
     private Context context;
-
+    FragmentManager fm;
+    WhereIsMyBus mapFragment;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -70,6 +72,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
+        fm = getSupportFragmentManager();
+        mapFragment = (WhereIsMyBus)fm.findFragmentByTag("WhereIsMyBus");
+
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,46 +119,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //NFC Things
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        //Location Things
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                /**
-                 * BURAYA DATABASE e YAZMA METODU GİDECEK
-                 */
-                createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
-            }
-        };
 
 
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 27:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    trackUsers();
-                return;
-        }
     }
 
     @Override
@@ -164,18 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void trackUsers() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.INTERNET}, 27);
-            return;
-        }
-
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
     @Override
@@ -280,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onNewIntent(intent);
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
             createNotification();
-            trackUsers();
+            mapFragment.trackUsers();
         }
     }
 
@@ -302,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationManager.notify(0, n);
     }
 
-    private void createNotification(String message) {
+    public void createNotification(String message) {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
         Notification n  = new Notification.Builder(this)
