@@ -41,6 +41,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -48,23 +50,28 @@ import cs102.mevzu06.bustagram2.Activities.Tables.MainCampus;
 import cs102.mevzu06.bustagram2.Activities.Tables.TMD;
 import cs102.mevzu06.bustagram2.Fragments.STARS;
 import cs102.mevzu06.bustagram2.Fragments.WhereIsMyBus;
+import cs102.mevzu06.bustagram2.Other.BackgroundWorker;
 import cs102.mevzu06.bustagram2.R;
+
+import static android.R.attr.fragment;
+
+// Bunda sonra bu passenger olarak biline.
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, STARS.OnFragmentInteractionListener {
 
     private Handler mHandler;
-    LocationManager locationManager;
-    LocationListener locationListener;
+    WhereIsMyBus xxx;
     NfcAdapter nfcAdapter;
     TextView tagContent;
     ToggleButton tb;
+    LocationListener locationListener;
+    LocationManager locationManager;
     private NotificationCompat.Builder builder;
     private NotificationManager notificationManager;
     private int notification_id;
     private RemoteViews remoteViews;
     private Context context;
-    FragmentManager fm;
-    WhereIsMyBus mapFragment;
+    boolean isFirst;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -72,9 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         context = this;
-        fm = getSupportFragmentManager();
-        mapFragment = (WhereIsMyBus)fm.findFragmentByTag("WhereIsMyBus");
-
+        isFirst = true;
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -119,8 +124,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //NFC Things
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
+        // Location
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                /**
+                 * BURAYA DATABASE e YAZMA METODU GİDECEK
+                 */
+                createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
+                if (isFirst)
+                {
+                    sendToDatabase(location.getLatitude()+"",location.getLongitude()+"","0");
+                    isFirst = false;
+                }
+                else
+                    updateDatabase(location.getLatitude()+"",location.getLongitude()+"","0");
+            }
 
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
 
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
     }
 
     @Override
@@ -230,20 +267,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
-            createNotification();
-            mapFragment.trackUsers();
-        }
-    }
-
     private void disableForegroundDispatchSystem() {
         nfcAdapter.disableForegroundDispatch(this);
     }
 
-    private void createNotification() {
+    public void createNotification() {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
         Notification n  = new Notification.Builder(this)
@@ -257,6 +285,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         notificationManager.notify(0, n);
     }
 
+
+
     public void createNotification(String message) {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
@@ -269,6 +299,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void trackUsers() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET}, 27);
+            return;
+        }
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
+            createNotification();
+            trackUsers();
+            isFirst = true;
+        }
+    }
+    public void sendToDatabase(String latitude, String longitude, String speed)
+    {
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.execute("uploadLocation", latitude, longitude, speed);
+    }
+
+    //Updates the data.
+    public void updateDatabase(String latitude, String longitude, String speed)
+    {
+        BackgroundWorker backgroundWorker = new BackgroundWorker(this);
+        backgroundWorker.execute("updateLocation", latitude, longitude, speed);
     }
 }
 

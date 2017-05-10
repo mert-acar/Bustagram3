@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Arrays;
@@ -56,7 +58,9 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
     public WhereIsMyBus() {}
     LocationManager locationManager;
     LocationListener locationListener;
-
+    Marker tmd1;
+    NfcAdapter nfcAdapter;
+    MainActivity xxx;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        xxx = (MainActivity)getActivity();
 
         mMapView = (MapView) mView.findViewById (R.id.map);
         if (mMapView != null)
@@ -93,51 +99,14 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
                 listView.setVisibility(View.VISIBLE);
             }
         });
-        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                /**
-                 * BURAYA DATABASE e YAZMA METODU GİDECEK
-                 */
-                ((MainActivity)getActivity()).createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
-            }
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(i);
-            }
-        };
-
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void trackUsers() {
-        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.INTERNET}, 27);
-            return;
-        }
-
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
+        tmd1 = googleMap.addMarker(new MarkerOptions().position(new LatLng(90.0000, -65.45466)));
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.addMarker (new MarkerOptions().position(new LatLng(39.917563,32.823518)).title("Bahçeli")).setVisible(true);
         googleMap.addMarker (new MarkerOptions().position(new LatLng(39.909977,32.857625)).title("Tunus")).setVisible(true);
