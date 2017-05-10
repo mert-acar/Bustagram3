@@ -28,6 +28,13 @@
         <item>Regional Services</item>
     </string-array>
 
+    <string-array name="ours">
+        <item>TMD</item>
+        <item>SMD</item>
+        <item>Main - East Campus Ring</item>
+    </string-array>
 
+    <string name="custom_notification">Have a nice ride!</string>
     <string name="activity_title_about_us">About Us</string>
+    <string name="collapsed">Have a nice ride! \nCreated at: %s</string>
 </resources>

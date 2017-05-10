@@ -87,11 +87,13 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
         MapsInitializer.initialize(getContext());
         mGoogleMap = googleMap;
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        googleMap.addMarker (new MarkerOptions().position(new LatLng(40.689247, - 70.044502)).title("Statue of Liberty"));
-        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(40.689247, - 70.044502)).zoom(16).bearing(0).build();
-        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+        googleMap.addMarker (new MarkerOptions().position(new LatLng(39.917563,32.823518)).title("Bahçeli")).setVisible(true);
+        googleMap.addMarker (new MarkerOptions().position(new LatLng(39.909977,32.857625)).title("Tunus")).setVisible(true);
+        googleMap.addMarker (new MarkerOptions().position(new LatLng(39.908574,32.776625)).title("Kentpark")).setVisible(true);
+        googleMap.addMarker (new MarkerOptions().position(new LatLng(39.911822,32.809670)).title("Armada")).setVisible(true);
+        CameraPosition bilkent = CameraPosition.builder().target(new LatLng(39.915721, 32.841662)).zoom(13).bearing(0).build();
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(bilkent));
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
             @Override
             public void onMapClick(LatLng arg0) {
                 listView.setVisibility(View.GONE);

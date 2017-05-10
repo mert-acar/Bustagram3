@@ -1,10 +1,14 @@
 package cs102.mevzu06.bustagram2.Activities;
 
+import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -12,9 +16,11 @@ import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
@@ -25,11 +31,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.text.DateFormat;
+import java.util.Date;
+
+import cs102.mevzu06.bustagram2.Activities.Tables.MainCampus;
+import cs102.mevzu06.bustagram2.Activities.Tables.TMD;
 import cs102.mevzu06.bustagram2.Fragments.STARS;
 import cs102.mevzu06.bustagram2.Fragments.WhereIsMyBus;
 import cs102.mevzu06.bustagram2.R;
@@ -54,28 +69,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        context = this;
         // Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Custom Notification
-        context = this;
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification);
-        remoteViews.setImageViewResource(R.id.notif_icon, R.drawable.ic_stat_directions_bus);
-        remoteViews.setTextViewText(R.id.notif_text, "Are you at Kentpark?");
+        // List
+        ListView listOurs = (ListView) findViewById(R.id.our_list);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ours, android.R.layout.simple_list_item_1);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        listOurs.setAdapter(adapter);
+        listOurs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                view.setSelected(true);
+                Intent listitem = null;
+                switch (position) {
+                    case 0:
+                        listitem = new Intent(context, TMD.class);
+                        break;
+                    /*case 1:
+                        listitem = new Intent(context, SMD.class);
+                        break;
+                    case 2:
+                        listitem = new Intent(context, Ring.class);*/
+                }
 
-        Intent yes_button_intent = new Intent("yes_clicked");
-        notification_id = (int) System.currentTimeMillis();
-        yes_button_intent.putExtra("id", notification_id);
-        Intent no_button_intent = new Intent("no_clicked");
-        no_button_intent.putExtra("id", notification_id);
-
-        PendingIntent p_yes_button_intent = PendingIntent.getBroadcast(context, 1, yes_button_intent, 0);
-        PendingIntent p_no_button_intent = PendingIntent.getBroadcast(context, 2, no_button_intent, 0);
-        remoteViews.setOnClickPendingIntent(R.id.yesButton, p_yes_button_intent);
-        remoteViews.setOnClickPendingIntent(R.id.noButton, p_no_button_intent);
+                if (listitem != null)
+                    startActivity(listitem);
+            }
+        });
 
 
         // Drawer
@@ -90,6 +113,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //NFC Things
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        //Location Things
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                /**
+                 * BURAYA DATABASE e YAZMA METODU GİDECEK
+                 */
+                createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
+            }
+        };
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 27:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    trackUsers();
+                return;
+        }
     }
 
     @Override
@@ -102,18 +167,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void trackUsers() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.INTERNET}, 27);
+            return;
+        }
+
+        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -203,20 +276,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
-            Intent notification_intent = new Intent(this, MainActivity.class);
-            PendingIntent p_notification_intent = PendingIntent.getActivity(this,0,notification_intent,0);
-            builder = new NotificationCompat.Builder(this);
-            builder.setSmallIcon(R.id.notif_icon).setAutoCancel(true).setCustomBigContentView(remoteViews).setContentIntent(p_notification_intent);
-            notificationManager.notify(notification_id,builder.build());
-            Toast.makeText(this,"NFC LOL",Toast.LENGTH_LONG).show();
+            createNotification();
+            trackUsers();
         }
     }
 
     private void disableForegroundDispatchSystem() {
         nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    private void createNotification() {
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        Notification n  = new Notification.Builder(this)
+                .setContentTitle("Bustagram")
+                .setContentText("Have a nice ride!")
+                .setSmallIcon(R.drawable.ic_stat_check_circle)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true).build();
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
+    }
+
+    private void createNotification(String message) {
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+        Notification n  = new Notification.Builder(this)
+                .setContentTitle("Bustagram")
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_stat_directions_bus)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true).build();
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, n);
     }
 }
 

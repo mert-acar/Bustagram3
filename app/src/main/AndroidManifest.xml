@@ -56,6 +56,10 @@
             android:label="Main - East Campus Ring"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".Activities.Tables.TMD"
+            android:label="TMD Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
         <receiver android:name="cs102.mevzu06.bustagram2.Other.Yes_button_listener">
             <intent-filter>
