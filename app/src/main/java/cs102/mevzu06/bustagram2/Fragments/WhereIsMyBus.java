@@ -92,6 +92,7 @@ public class WhereIsMyBus extends Fragment implements OnMapReadyCallback
         googleMap.addMarker (new MarkerOptions().position(new LatLng(39.908574,32.776625)).title("Kentpark")).setVisible(true);
         googleMap.addMarker (new MarkerOptions().position(new LatLng(39.911822,32.809670)).title("Armada")).setVisible(true);
         CameraPosition bilkent = CameraPosition.builder().target(new LatLng(39.915721, 32.841662)).zoom(13).bearing(0).build();
+
         googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(bilkent));
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
