@@ -22,26 +22,26 @@ import java.net.URLEncoder;
  * Created by Murat on 9.05.2017.
  */
 
-public class BackgroundWorker extends AsyncTask<String,Void,String>
-{
+public class BackgroundWorker extends AsyncTask<String, Void, String> {
     Context context;
     AlertDialog alertDialog;
-    public BackgroundWorker(Context ctx) { context = ctx; }
+
+    public BackgroundWorker(Context ctx) {
+        context = ctx;
+    }
 
 
     @Override
-    protected String doInBackground(String... params)
-    {
+    protected String doInBackground(String... params) {
         String type = params[0];
-        String send_location_url = "http://bustagram.000webhostapp.com/upload.php";
-        String update_location_url = "http://bustagram.000webhostapp.com/updatelocation.php";
+        String send_location_url = "http://bustagramm.000webhostapp.com/upload.php";
+        String update_location_url = "http://bustagramm.000webhostapp.com/updatelocation.php";
 
-        if(type.equals("uploadLocation"))
-        {
+        if (type.equals("uploadLocation")) {
             try {
                 String latitude = params[1];
                 String longitude = params[2];
-                String speed = params[3];
+                String buscode = params[3];
                 URL url = new URL(send_location_url);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -51,9 +51,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String>
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String post_data = URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude,"UTF-8")+"&"
-                        + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude,"UTF-8")+"&"
-                        + URLEncoder.encode("speed", "UTF-8")+"="+URLEncoder.encode(speed,"UTF-8");
+                String post_data = URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(latitude, "UTF-8") + "&"
+                        + URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(longitude, "UTF-8") + "&"
+                        + URLEncoder.encode("buscode", "UTF-8") + "=" + URLEncoder.encode(buscode, "UTF-8");
 
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
@@ -65,8 +65,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String>
                 String result = "";
                 String line = "";
 
-                while((line = bufferedReader.readLine()) != null)
-                {
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
 
@@ -82,15 +81,11 @@ public class BackgroundWorker extends AsyncTask<String,Void,String>
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        else if (type.equals("updateLocation"))
-        {
-            try
-            {
+        } else if (type.equals("updateLocation")) {
+            try {
                 String latitude = params[1];
                 String longitude = params[2];
-                String speed = params[3];
+                String buscode = params[3];
                 URL url = new URL(update_location_url);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -100,9 +95,9 @@ public class BackgroundWorker extends AsyncTask<String,Void,String>
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
 
-                String post_data = URLEncoder.encode("latitude", "UTF-8")+"="+URLEncoder.encode(latitude,"UTF-8")+"&"
-                        + URLEncoder.encode("longitude", "UTF-8")+"="+URLEncoder.encode(longitude,"UTF-8")+"&"
-                        + URLEncoder.encode("speed", "UTF-8")+"="+URLEncoder.encode(speed,"UTF-8");
+                String post_data = URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(latitude, "UTF-8") + "&"
+                        + URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(longitude, "UTF-8") + "&"
+                        + URLEncoder.encode("buscode", "UTF-8") + "=" + URLEncoder.encode(buscode, "UTF-8");
 
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
@@ -114,8 +109,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String>
                 String result = "";
                 String line = "";
 
-                while((line = bufferedReader.readLine()) != null)
-                {
+                while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
 
