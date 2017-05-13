@@ -21,6 +21,17 @@
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@android:drawable/ic_menu_more" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/myText"
+        android:layout_marginTop="90dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/myButton"
+        android:text="Refresh"
+        android:layout_marginTop="110dp" />
     <ListView
         android:id="@+id/listOnline"
         android:layout_width="match_parent"

@@ -31,6 +31,16 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_key"
             android:layout_marginTop="94dp"/>
+
+
+        <TextView
+            android:id="@+id/textmy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="458dp"/>
+
     </RelativeLayout>
 
     <include

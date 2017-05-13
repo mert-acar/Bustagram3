@@ -12,10 +12,17 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.Ndef;
+import android.nfc.tech.NdefFormatable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -30,6 +37,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,52 +50,69 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import cs102.mevzu06.bustagram2.Activities.Tables.MainCampus;
 import cs102.mevzu06.bustagram2.Activities.Tables.TMD;
 import cs102.mevzu06.bustagram2.Fragments.STARS;
 import cs102.mevzu06.bustagram2.Fragments.WhereIsMyBus;
 import cs102.mevzu06.bustagram2.Other.BackgroundWorker;
+import cs102.mevzu06.bustagram2.Other.HTMLFilteredReader;
 import cs102.mevzu06.bustagram2.R;
 
 import static android.R.attr.fragment;
 
-// Bunda sonra bu passenger olarak biline.
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, STARS.OnFragmentInteractionListener {
 
     private Handler mHandler;
-    WhereIsMyBus xxx;
     NfcAdapter nfcAdapter;
-    TextView tagContent;
-    ToggleButton tb;
     LocationListener locationListener;
     LocationManager locationManager;
-    private NotificationCompat.Builder builder;
-    private NotificationManager notificationManager;
-    private int notification_id;
-    private RemoteViews remoteViews;
     private Context context;
     boolean isFirst;
+    final String URL = "http://bustagramm.000webhostapp.com/id.php";
+    TextView tv;
+    String content;
+    Toolbar toolbar;
+    ListView listOurs;
+    ArrayAdapter<CharSequence> adapter;
+    DrawerLayout drawer;
+    ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         context = this;
         isFirst = true;
+
+
         // Toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // List
-        ListView listOurs = (ListView) findViewById(R.id.our_list);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ours, android.R.layout.simple_list_item_1);
+        listOurs = (ListView) findViewById(R.id.our_list);
+        adapter = ArrayAdapter.createFromResource(this, R.array.ours, android.R.layout.simple_list_item_1);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         listOurs.setAdapter(adapter);
         listOurs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,10 +125,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         listitem = new Intent(context, TMD.class);
                         break;
                     /*case 1:
-                        listitem = new Intent(context, SMD.class);
+                        listitem = new Intent( context, SMD.class);
                         break;
                     case 2:
-                        listitem = new Intent(context, Ring.class);*/
+                        listitem = new Intent( context, Ring.class);
+                        break;*/
                 }
 
                 if (listitem != null)
@@ -110,15 +137,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        // TextView
+        tv = (TextView) findViewById(R.id.textmy);
+        tv.setText("SHIT");
 
         // Drawer
         mHandler = new Handler();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //NFC Things
@@ -129,17 +159,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                /**
-                 * BURAYA DATABASE e YAZMA METODU GİDECEK
-                 */
                 createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
-                if (isFirst)
-                {
-                    sendToDatabase(location.getLatitude()+"",location.getLongitude()+"","0");
+                HTMLFilteredReader reader = new HTMLFilteredReader(URL);
+                String dbid = reader.getPageContents();
+                if (isFirst) {
+                    sendToDatabase(location.getLatitude() + "", location.getLongitude() + "", content);
+                    tv.setText(dbid);
                     isFirst = false;
-                }
-                else
-                    updateDatabase(location.getLatitude()+"",location.getLongitude()+"","0");
+                } else
+                    updateDatabase(location.getLatitude() + "", location.getLongitude() + "", content, dbid);
             }
 
             @Override
@@ -162,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -271,26 +299,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nfcAdapter.disableForegroundDispatch(this);
     }
 
-    public void createNotification() {
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-        Notification n  = new Notification.Builder(this)
-                .setContentTitle("Bustagram")
-                .setContentText("Have a nice ride!")
-                .setSmallIcon(R.drawable.ic_stat_check_circle)
-                .setContentIntent(pIntent)
-                .setAutoCancel(true).build();
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, n);
-    }
-
-
-
     public void createNotification(String message) {
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-        Notification n  = new Notification.Builder(this)
+        Notification n = new Notification.Builder(this)
                 .setContentTitle("Bustagram")
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_stat_directions_bus)
@@ -309,29 +321,151 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Manifest.permission.INTERNET}, 27);
             return;
         }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        locationManager.requestLocationUpdates("gps", 2000, 0, locationListener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         if (intent.hasExtra(NfcAdapter.EXTRA_TAG)) {
-            createNotification();
-            trackUsers();
-            isFirst = true;
+            // Reading
+            Parcelable[] parcelables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+            if (parcelables != null && parcelables.length > 0) {
+                readTextFromMessage((NdefMessage) parcelables[0]);
+            } else {
+                Toast.makeText(this, "TAG IS EMPTY AF", Toast.LENGTH_SHORT).show();
+            }
+
+            // Writing
+            /*Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+            NdefMessage ndefMessage = createNdefMessage("TMD2");
+            writeNdefMessage(tag,ndefMessage);
+
+            // Tracking
+            /**trackUsers();
+            isFirst = true;*/
+
+            // Notifications
+            Toast.makeText(this, "You are on " + content, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Have a nice ride!", Toast.LENGTH_LONG).show();
+
         }
     }
-    public void sendToDatabase(String latitude, String longitude, String speed)
-    {
+
+    private void readTextFromMessage(NdefMessage ndefMessage) {
+        NdefRecord[] ndefRecords = ndefMessage.getRecords();
+
+        if (ndefRecords != null && ndefRecords.length > 0) {
+            NdefRecord ndefRecord = ndefRecords[0];
+            content = getTextFromNdefRecord(ndefRecord);
+            tv.setText(content);
+        } else {
+            Toast.makeText(this, "No NDEF records", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private String getTextFromNdefRecord(NdefRecord ndefRecord) {
+        String tagContent = null;
+        try {
+            byte[] payload = ndefRecord.getPayload();
+            String textEncoding = ((payload[0] & 128) == 0) ? "UTF-8" : "UTF-16";
+            int languageSize = payload[0] & 0063;
+            tagContent = new String(payload, languageSize + 1, payload.length - languageSize - 1, textEncoding);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return tagContent;
+    }
+
+
+    private void formatTag(Tag busTag, NdefMessage thePlate) {
+        try {
+            NdefFormatable nf = NdefFormatable.get(busTag);
+            if (nf == null) {
+                Toast.makeText(this, "Tag is not formatable", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            nf.connect();
+            nf.format(thePlate);
+            nf.close();
+
+            Toast.makeText(this, "Tag written", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void writeNdefMessage(Tag busTag, NdefMessage thePlate) {
+        try {
+            if (busTag == null) {
+
+                Toast.makeText(this, "Tag cannot be null", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Ndef ndef = Ndef.get(busTag);
+            if (ndef == null) {
+                formatTag(busTag, thePlate);
+            } else {
+                ndef.connect();
+                if (!ndef.isWritable()) {
+                    Toast.makeText(this, "Tag cannot be written", Toast.LENGTH_SHORT).show();
+                    ndef.close();
+                    return;
+                }
+                ndef.writeNdefMessage(thePlate);
+                ndef.close();
+
+                Toast.makeText(this, "Tag written!", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private NdefRecord createTextRecord(String content) {
+        try {
+            byte[] language;
+            language = Locale.getDefault().getLanguage().getBytes("UTF-8");
+
+            final byte[] text = content.getBytes("UTF-8");
+            final int languageSize = language.length;
+            final int textLength = text.length;
+            final ByteArrayOutputStream payload = new ByteArrayOutputStream(1 + languageSize + textLength);
+
+            payload.write((byte) (languageSize & 0x1F));
+            payload.write(language, 0, languageSize);
+            payload.write(text, 0, textLength);
+            return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], payload.toByteArray());
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private NdefMessage createNdefMessage(String content) {
+        NdefRecord ndefRecord = createTextRecord(content);
+        NdefMessage ndefMessage = new NdefMessage(new NdefRecord[]{ndefRecord});
+        return ndefMessage;
+    }
+
+
+    public void sendToDatabase(String latitude, String longitude, String buscode) {
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-        backgroundWorker.execute("uploadLocation", latitude, longitude, speed);
+        backgroundWorker.execute("uploadLocation", latitude, longitude, buscode);
     }
 
     //Updates the data.
-    public void updateDatabase(String latitude, String longitude, String speed)
-    {
+    public void updateDatabase(String latitude, String longitude, String buscode, String dbid) {
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
-        backgroundWorker.execute("updateLocation", latitude, longitude, speed);
+        backgroundWorker.execute("updateLocation", latitude, longitude, buscode, dbid);
     }
 }
+
+
 

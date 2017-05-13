@@ -24,15 +24,14 @@ import java.net.URLEncoder;
 
 public class BackgroundWorker extends AsyncTask<String, Void, String> {
     Context context;
-    AlertDialog alertDialog;
+    String id;
 
-    public BackgroundWorker(Context ctx) {
-        context = ctx;
-    }
+    public BackgroundWorker(Context ctx) { context = ctx; }
 
-
+    String ttd;
     @Override
     protected String doInBackground(String... params) {
+
         String type = params[0];
         String send_location_url = "http://bustagramm.000webhostapp.com/upload.php";
         String update_location_url = "http://bustagramm.000webhostapp.com/updatelocation.php";
@@ -86,6 +85,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 String latitude = params[1];
                 String longitude = params[2];
                 String buscode = params[3];
+                String dbid = params[4];
                 URL url = new URL(update_location_url);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -97,7 +97,8 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
 
                 String post_data = URLEncoder.encode("latitude", "UTF-8") + "=" + URLEncoder.encode(latitude, "UTF-8") + "&"
                         + URLEncoder.encode("longitude", "UTF-8") + "=" + URLEncoder.encode(longitude, "UTF-8") + "&"
-                        + URLEncoder.encode("buscode", "UTF-8") + "=" + URLEncoder.encode(buscode, "UTF-8");
+                        + URLEncoder.encode("buscode", "UTF-8") + "=" + URLEncoder.encode(buscode, "UTF-8") + "&"
+                        + URLEncoder.encode("dbid", "UTF-8") + "=" + URLEncoder.encode(dbid, "UTF-8");
 
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
