@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cs102.mevzu06.bustagram2.Fragments.BlankFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="\nIf you have any feedback regarding this app please feel free to reach us at bustagram@mevzu06.com.amazon"
+        android:id="@+id/textView96"
+        android:layout_alignParentTop="true" />
+    <Button
+        android:id="@+id/btn_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send feedback"
+        android:layout_below="@+id/textView96"
+        android:layout_alignLeft="@+id/textView96"
+        android:layout_alignStart="@+id/textView96"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</LinearLayout>

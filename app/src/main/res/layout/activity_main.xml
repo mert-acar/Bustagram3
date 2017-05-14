@@ -13,14 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/list_tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Our Lists"
-            android:textSize="26sp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="58dp"/>
 
 
         <ListView
@@ -30,16 +22,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_key"
-            android:layout_marginTop="94dp"/>
+            android:layout_marginTop="64dp"/>
 
-
-        <TextView
-            android:id="@+id/textmy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="26sp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="458dp"/>
 
     </RelativeLayout>
 

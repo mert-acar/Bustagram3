@@ -19,4 +19,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <TextView
+        android:id="@+id/aboutUs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:text="  \n  Hey! We are Mevzu06. A group of 6 freshman students. We are dedicated to helping our fellow Bilkenters reach their busses. We hope you find this app useful. If you have any suggestions please give us feedback. "
+        android:textColor="#0638ce"
+        android:textSize="17dp" />
+
+
 </LinearLayout>

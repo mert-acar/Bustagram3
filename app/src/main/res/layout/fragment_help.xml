@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="This app is designed for you to easily track Bilkent buses, but we need you for that! Please swipe your phone above the NFC tag in the bus when you get on the bus. If your location is off, the app will lead you to settings page to open it.
+
+\n \n“Where is my bus?” provides a map, in which you can see your current place and two choices of SMD or TMD. After you choose one of the options, all of the mobile buses of your choice are shown on the map. As the buses move, their icons move simultaneously so you can see their locations on the map.
+
+\n \n“Offline Schedule” again provides two choices of SMD and TMD. It shows the estimated arrivals of the buses in weekends and weekdays.
+"
+        android:layout_marginTop="58dp"
+        android:layout_marginRight="15dp"/>
+
+</LinearLayout>

@@ -29,29 +29,20 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -63,22 +54,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.text.DateFormat;
-import java.util.Date;
+import java.net.URLConnection;
 import java.util.Locale;
 
-import cs102.mevzu06.bustagram2.Activities.Tables.MainCampus;
+
+import cs102.mevzu06.bustagram2.Activities.Tables.SMD;
 import cs102.mevzu06.bustagram2.Activities.Tables.TMD;
-import cs102.mevzu06.bustagram2.Fragments.STARS;
+import cs102.mevzu06.bustagram2.Fragments.BlankFragment;
+import cs102.mevzu06.bustagram2.Fragments.Help;
+import cs102.mevzu06.bustagram2.Fragments.OfflineSchedule;
 import cs102.mevzu06.bustagram2.Fragments.WhereIsMyBus;
 import cs102.mevzu06.bustagram2.Other.BackgroundWorker;
-import cs102.mevzu06.bustagram2.Other.HTMLFilteredReader;
 import cs102.mevzu06.bustagram2.R;
 
-import static android.R.attr.fragment;
 
-
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, STARS.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private Handler mHandler;
     NfcAdapter nfcAdapter;
@@ -86,8 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     LocationManager locationManager;
     private Context context;
     boolean isFirst;
-    final String URL = "http://bustagramm.000webhostapp.com/id.php";
-    TextView tv;
+    final String url_lol = "http://bustagramm.000webhostapp.com/id.php";
     String content;
     Toolbar toolbar;
     ListView listOurs;
@@ -95,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawer;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
+    String dbid;
+
+    public MainActivity() throws MalformedURLException {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -124,12 +117,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case 0:
                         listitem = new Intent(context, TMD.class);
                         break;
-                    /*case 1:
+                    case 1:
                         listitem = new Intent( context, SMD.class);
                         break;
-                    case 2:
-                        listitem = new Intent( context, Ring.class);
-                        break;*/
+
                 }
 
                 if (listitem != null)
@@ -138,8 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // TextView
-        tv = (TextView) findViewById(R.id.textmy);
-        tv.setText("SHIT");
+
 
         // Drawer
         mHandler = new Handler();
@@ -160,14 +150,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onLocationChanged(Location location) {
                 createNotification("You are at: " + location.getLatitude() + ", " + location.getLongitude());
-                HTMLFilteredReader reader = new HTMLFilteredReader(URL);
-                String dbid = reader.getPageContents();
                 if (isFirst) {
                     sendToDatabase(location.getLatitude() + "", location.getLongitude() + "", content);
-                    tv.setText(dbid);
                     isFirst = false;
-                } else
+                    getDBID();
+
+                } else {
                     updateDatabase(location.getLatitude() + "", location.getLongitude() + "", content, dbid);
+                }
             }
 
             @Override
@@ -188,9 +178,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
     }
 
+    private InputStream OpenHttpConnection(String strURL) throws IOException {
+        URLConnection conn = null;
+        InputStream inputStream = null;
+        URL url = new URL(strURL);
+        conn = url.openConnection();
+        HttpURLConnection httpConn = (HttpURLConnection) conn;
+        httpConn.setRequestMethod("GET");
+        httpConn.connect();
+        if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            inputStream = httpConn.getInputStream();
+        }
+        httpConn.disconnect();
+        return inputStream;
+    }
+
+    private String readLeStream(InputStream leStream) throws IOException {
+        String out = "";
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(leStream, "iso-8859-1"));
+        out += bufferedReader.readLine();
+        leStream.close();
+        bufferedReader.close();
+        return out;
+    }
+
     @Override
     public void onBackPressed() {
-        // DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -228,17 +241,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new WhereIsMyBus();
             theTitle = "Where Is My Bus?";
         } else if (id == R.id.nav_offline_schedule) {
-            fragment = new STARS();
-            theTitle = "STARS Schedules";
-        } /*else if (id == R.id.nav_helpOption) {
-            fragment = new HelpFragment();
+            fragment = new OfflineSchedule();
+            theTitle = "Offline Schedules";
+        } else if (id == R.id.nav_helpOption) {
+            fragment = new Help();
             theTitle = "Help";
-        } else if (id == R.id.nav_settingsOption) {
-            fragment = new SettingsFragment();
-            theTitle = "Settings";
-        }*/
+        } else if (id == R.id.nav_feedback){
+            fragment = new BlankFragment();
+            theTitle = "Send us feedback";
+        }
 
-        final Fragment finalFragment = fragment;
+        /*final Fragment finalFragment = fragment;
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
@@ -251,14 +264,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
 
-        mHandler.post(mPendingRunnable);
+        mHandler.post(mPendingRunnable);*/
 
         // An alternative way without the animation and the handler.
-        /*if (fragment != null) {
+        if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
-        }*/
+        }
 
         if (!theTitle.equals(""))
             setToolbarTitle(theTitle);
@@ -272,10 +285,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(title);
     }
 
-    @Override
+    /*@Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
+    }*/
 
     protected void onResume() {
         super.onResume();
@@ -338,14 +351,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Writing
             /*Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            NdefMessage ndefMessage = createNdefMessage("TMD2");
-            writeNdefMessage(tag,ndefMessage);
+            NdefMessage ndefMessage = createNdefMessage("RING1");
+            writeNdefMessage(tag,ndefMessage);*/
 
             // Tracking
-            /**trackUsers();
-            isFirst = true;*/
+            trackUsers();
+            isFirst = true;
 
-            // Notifications
+
             Toast.makeText(this, "You are on " + content, Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Have a nice ride!", Toast.LENGTH_LONG).show();
 
@@ -358,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (ndefRecords != null && ndefRecords.length > 0) {
             NdefRecord ndefRecord = ndefRecords[0];
             content = getTextFromNdefRecord(ndefRecord);
-            tv.setText(content);
+
         } else {
             Toast.makeText(this, "No NDEF records", Toast.LENGTH_SHORT).show();
         }
@@ -387,6 +400,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "Tag is not formatable", Toast.LENGTH_SHORT).show();
                 return;
             }
+
             nf.connect();
             nf.format(thePlate);
             nf.close();
@@ -464,6 +478,60 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void updateDatabase(String latitude, String longitude, String buscode, String dbid) {
         BackgroundWorker backgroundWorker = new BackgroundWorker(this);
         backgroundWorker.execute("updateLocation", latitude, longitude, buscode, dbid);
+    }
+
+    class IDFetcher extends AsyncTask<Void, String, String> {
+        //properties
+        String average_url = "http://bustagramm.000webhostapp.com/id.php";
+        Context context;
+        String result;
+
+        //constructor
+        IDFetcher (Context ctx) {
+            context = ctx;
+        }
+
+        //methods
+        protected String doInBackground(Void... voids) {
+            try {
+                String line;
+                URL url = new URL(average_url);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                return result;
+
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dbid = result.substring(4);
+        }
+    }
+
+    public void getDBID () {
+        IDFetcher idFetcher = new IDFetcher(this);
+        idFetcher.execute();
     }
 }
 

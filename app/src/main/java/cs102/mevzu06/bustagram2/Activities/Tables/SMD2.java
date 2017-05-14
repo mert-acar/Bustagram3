@@ -1,6 +1,5 @@
 package cs102.mevzu06.bustagram2.Activities.Tables;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,13 +16,11 @@ import cs102.mevzu06.bustagram2.R;
  * Created by Mert Acar on 5/10/2017.
  */
 
-public class SMD extends AppCompatActivity {
-    final Context context = this;
-
+public class SMD2 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.smd_layout);
+        setContentView(R.layout.smd_2_layout);
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -32,12 +29,14 @@ public class SMD extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        Button next = (Button) findViewById(R.id.button3);
+        Button next = (Button) findViewById(R.id.button5);
         next.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent = new Intent(context, SMD2.class);
-                startActivity(intent);
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
             }
+
         });
 
     }

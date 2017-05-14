@@ -1,12 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
 
+    -
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,47 +24,86 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:background="@color/blue"
+            android:text="Weekdays"
+            android:layout_weight="0.75" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="186dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.46"
+            android:background="#FFFFFF"
+            android:text="Weekends" />
+
+    </LinearLayout>
+
+
+    -
+
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        -
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
+
+
+            -
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+                -
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
+
+
+                    -
 
                     <TableLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:id="@+id/textView"
+                                android:id="@+id/textView1"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  Tunus"
+                                android:text=" Tunus"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView2"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   Bahceli"
+                                android:text=" Bahceli"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView3"
@@ -76,17 +118,19 @@
                                 android:layout_height="40dp"
                                 android:text=" Kentpark"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView5"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   Mosque"
+                                android:text=" Mosque"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -96,17 +140,16 @@
                                 android:id="@+id/textView6"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  07.50"
+                                android:text=" 07.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView7"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   08.00"
+                                android:text=" 08.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView8"
@@ -121,17 +164,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 08.16"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView10"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   08.20"
+                                android:text=" 08.20"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -141,17 +186,16 @@
                                 android:id="@+id/textView11"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  08.40"
+                                android:text=" 08.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView12"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   08.50"
+                                android:text=" 08.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView13"
@@ -166,17 +210,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 09.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView15"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   09.10"
+                                android:text=" 09.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -186,17 +232,16 @@
                                 android:id="@+id/textView16"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  09.40"
+                                android:text=" 09.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView17"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   09.50"
+                                android:text=" 09.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView18"
@@ -211,17 +256,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 10.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView20"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   10.10"
+                                android:text=" 10.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -231,17 +278,16 @@
                                 android:id="@+id/textView21"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  10.40"
+                                android:text=" 10.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView22"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   10.50"
+                                android:text=" 10.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView23"
@@ -256,17 +302,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 11.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView25"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   11.10"
+                                android:text=" 11.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -276,17 +324,16 @@
                                 android:id="@+id/textView26"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  11.40"
+                                android:text=" 11.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView27"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   11.50"
+                                android:text=" 11.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView28"
@@ -301,18 +348,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 12.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView30"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   12.10"
+                                android:text=" 12.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
 
                         </TableRow>
 
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -322,17 +370,16 @@
                                 android:id="@+id/textView31"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  12.40"
+                                android:text=" 12.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView32"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   12.50"
+                                android:text=" 12.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView33"
@@ -347,17 +394,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 13.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView35"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   13.10"
+                                android:text=" 13.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -367,17 +416,16 @@
                                 android:id="@+id/textView36"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  13.40"
+                                android:text=" 13.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView37"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   13.50"
+                                android:text=" 13.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView38"
@@ -392,17 +440,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 14.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView40"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   14.10"
+                                android:text=" 14.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -412,17 +462,16 @@
                                 android:id="@+id/textView41"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  14.40"
+                                android:text=" 14.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView42"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   14.50"
+                                android:text=" 14.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView43"
@@ -437,18 +486,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 15.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView45"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   15.10"
+                                android:text=" 15.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
 
                         </TableRow>
 
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -458,17 +508,16 @@
                                 android:id="@+id/textView46"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  15.40"
+                                android:text=" 15.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView47"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   15.50"
+                                android:text=" 15.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView48"
@@ -483,17 +532,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 16.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView50"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   16.10"
+                                android:text=" 16.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -503,17 +554,16 @@
                                 android:id="@+id/textView51"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  16.40"
+                                android:text=" 16.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView52"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   16.50"
+                                android:text=" 16.50"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView53"
@@ -528,17 +578,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 17.06"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView55"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   17.10"
+                                android:text=" 17.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -548,17 +600,16 @@
                                 android:id="@+id/textView56"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  18.00"
+                                android:text=" 18.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView57"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   18.10"
+                                android:text=" 18.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView58"
@@ -573,17 +624,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 18.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView60"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   18.25"
+                                android:text=" 18.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -593,17 +646,16 @@
                                 android:id="@+id/textView61"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  19.00"
+                                android:text=" 19.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView62"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   19.10"
+                                android:text=" 19.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView63"
@@ -618,17 +670,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 19.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView65"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   19.25"
+                                android:text=" 19.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -638,17 +692,16 @@
                                 android:id="@+id/textView66"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  20.00"
+                                android:text=" 20.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView67"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   20.10"
+                                android:text=" 20.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView68"
@@ -663,17 +716,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 20.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView70"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   20.25"
+                                android:text=" 20.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -683,17 +738,16 @@
                                 android:id="@+id/textView71"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  21.00"
+                                android:text=" 21.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView72"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   21.10"
+                                android:text=" 21.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView73"
@@ -708,17 +762,20 @@
                                 android:layout_height="40dp"
                                 android:text=" 21.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView75"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   21.25"
+                                android:text=" 21.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
+
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -727,17 +784,16 @@
                                 android:id="@+id/textView76"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  22.00"
+                                android:text=" 22.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView77"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   22.10"
+                                android:text=" 22.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView78"
@@ -752,17 +808,20 @@
                                 android:layout_height="40dp"
                                 android:text=" 22.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView80"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   23.25"
+                                android:text=" 23.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
+
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -771,17 +830,16 @@
                                 android:id="@+id/textView81"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  23.00"
+                                android:text=" 23.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView82"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   23.10"
+                                android:text=" 23.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView83"
@@ -796,17 +854,19 @@
                                 android:layout_height="40dp"
                                 android:text=" 23.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView85"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   23.25"
+                                android:text=" 23.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
 
                         <TableRow
                             android:layout_width="match_parent"
@@ -816,17 +876,16 @@
                                 android:id="@+id/textView86"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  00.00"
+                                android:text=" 00.00"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView87"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   00.10"
+                                android:text=" 00.10"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView88"
@@ -841,17 +900,20 @@
                                 android:layout_height="40dp"
                                 android:text=" 00.21"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView90"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   00.25"
+                                android:text=" 00.25"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-
                         </TableRow>
+
+
+                        -
+
                         <TableRow
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -860,26 +922,22 @@
                                 android:id="@+id/textView91"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="  01.30 (+)"
-                                android:textStyle="bold"
+                                android:text=" 01.30"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
                                 android:id="@+id/textView92"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   01.40"
-                                android:textStyle="bold"
+                                android:text=" 01.40"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
-
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView93"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
                                 android:text=" 01.46"
-                                android:textStyle="bold"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                             <TextView
@@ -887,27 +945,26 @@
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
                                 android:text=" 01.51"
-                                android:textStyle="bold"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                                android:textColor="@color/colorAccent" />
+                                android:textColor="#2a8b99" />
 
                             <TextView
                                 android:id="@+id/textView95"
                                 android:layout_width="80dp"
                                 android:layout_height="40dp"
-                                android:text="   01.55"
-                                android:textStyle="bold"
+                                android:text=" 01.55"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
 
                         </TableRow>
 
                     </TableLayout>
+
                 </LinearLayout>
+
             </ScrollView>
+
         </LinearLayout>
+
     </HorizontalScrollView>
 
-
 </LinearLayout>
-

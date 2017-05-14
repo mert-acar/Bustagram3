@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true">
@@ -24,7 +25,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/app_name"
+            android:label="Offline Schedules"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,31 +37,23 @@
             android:label="About Us"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".Activities.Tables.MainCampus"
-            android:label="Main Campus"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.Tables.EastCampus"
-            android:label="East Campus"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.Tables.MainCampusRing"
-            android:label="Main Campus Ring"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.Tables.Regional"
-            android:label="Regional Services"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.Tables.MainEastCampus"
-            android:label="Main - East Campus Ring"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".Activities.Tables.TMD"
-            android:label="TMD Schedule"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
 
+        <activity android:name=".Activities.Tables.TMD"
+            android:label="TMD Weekday Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Activities.Tables.TMD2"
+            android:label="TMD Weekend Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Activities.Tables.SMD"
+            android:label="SMD Weekday Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Activities.Tables.SMD2"
+            android:label="SMD Weekend Schedule"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <receiver android:name="cs102.mevzu06.bustagram2.Other.Yes_button_listener">
             <intent-filter>
                 <action android:name="yes_clicked"/>

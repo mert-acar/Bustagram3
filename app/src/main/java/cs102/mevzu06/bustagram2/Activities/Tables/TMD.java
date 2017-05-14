@@ -1,10 +1,13 @@
 package cs102.mevzu06.bustagram2.Activities.Tables;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import cs102.mevzu06.bustagram2.R;
 
@@ -26,6 +29,14 @@ public class TMD extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+        Button next = (Button) findViewById(R.id.button3);
+        next.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent myIntent = new Intent(view.getContext(), TMD2.class);
+                startActivityForResult(myIntent, 0);
+            }
+
+        });
 
     }
     @Override
